@@ -1,0 +1,103 @@
+<div class="row animated fadeIn fast">
+
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-body">
+                <input class="form-control"
+                        #txtBuscar
+                        type="text"
+                        (keyup)="buscar(txtBuscar.value)"
+                        placeholder="Buscar paciente por Apellido...">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row animated fadeIn fast" *ngIf="cargando">
+
+    <div class="col-12">
+
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere</p>
+    </div>
+
+    </div>
+</div>
+
+<div class="row animated fadeIn fast" *ngIf="!cargando">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                
+                <div class="row">
+
+                    <div class="col-8">
+                        <h4 class="card-title">Pacientes: {{totalPacientes}}</h4>
+                        <h6 class="card-subtitle">Pacientes registrados</h6>
+                    </div>
+
+                    <div class="col">
+                    
+                        <div class="text-right">
+                            <a class="btn btn-success text-white"
+                               routerLink="/dashboard/pacientes/paciente/nuevo"> 
+                                <i class="fa fa-user"></i>
+                                Crear Paciente
+                            </a>
+                        </div>
+    
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th class="w140">DNI</th>
+                                <th>Obra Social</th>
+                                <th class="text-nowrap w100">Actiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let paciente of pacientes">
+                                <td>{{paciente.apellido}}</td>
+                                <td>{{paciente.nombre}}</td>
+                                <td>{{paciente.dni}}</td>
+                                <td>{{paciente.obraSocial.nombre}}</td>
+                                <td class="text-nowrap text-center">
+                                    <a (click)="verPaciente(paciente._id)" class="cursor" data-toggle="tooltip" data-original-title="Ver"> <i class="fa fa-search text-inverse m-r-10"></i> </a>
+                                    <a class="cursor" data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a class="cursor" data-toggle="tooltip" data-original-title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center" *ngIf="txtBuscar.value.length===0">
+                    <button (click)="cambiarPagina(-5)" 
+                              class="btn btn-success" 
+                            [disabled]="paginaDesde==0">
+                        Anterior
+                    </button>
+                    &nbsp;
+                    <button (click)="cambiarPagina(5)" 
+                            class="btn btn-success" 
+                            [disabled]="paginaDesde+4>=totalPacientes">
+                        Siguiente
+                    </button>
+                </div>  
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,101 @@
+<div class="row animated fadeIn fast">
+
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-body">
+                <input class="form-control"
+                        #txtBuscar
+                        type="text"
+                        (keyup)="buscar(txtBuscar.value)"
+                        placeholder="Buscar obra social...">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row animated fadeIn fast" *ngIf="cargando">
+
+    <div class="col-12">
+
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere</p>
+    </div>
+
+    </div>
+</div>
+
+<div class="row animated fadeIn fast" *ngIf="!cargando">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                
+                <div class="row">
+
+                    <div class="col-8">
+                        <h4 class="card-title">Obras Sociales: {{totalObrasSociales}}</h4>
+                        <h6 class="card-subtitle">Obras Sociales registradas</h6>
+                    </div>
+
+                    <div class="col">
+                    
+                        <div class="text-right">
+                            <a class="btn btn-success text-white"
+                                (click)="crearObraSocial()"> 
+                                <i class="fa fa-pencil"></i>
+                                Crear Obra Social
+                            </a>
+                        </div>
+    
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th class="w100">Estado</th>
+                                <th class="text-nowrap w100">Actiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let obraSocial of obrasSociales">
+                                <td>{{obraSocial.nombre}}</td>
+                                <td class="text-center">
+                                    <span *ngIf="obraSocial.activo" class="label label-success">Activa</span>
+                                    <span *ngIf="!obraSocial.activo" class="label label-danger">Inactiva</span>
+                                </td>
+                                <td class="text-nowrap text-center">
+                                    <a (click)="actualizarObraSocial(obraSocial)" class="cursor" data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a (click)="activarInactivarObraSocial(obraSocial)" class="cursor" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center" *ngIf="txtBuscar.value.length===0">
+                    <button (click)="cambiarPagina(-5)" 
+                              class="btn btn-success" 
+                            [disabled]="paginaDesde==0">
+                        Anterior
+                    </button>
+                    &nbsp;
+                    <button (click)="cambiarPagina(5)" 
+                            class="btn btn-success" 
+                            [disabled]="paginaDesde+2>=totalObrasSociales">
+                        Siguiente
+                    </button>
+                </div>  
+
+            </div>
+        </div>
+    </div>
+
+</div>

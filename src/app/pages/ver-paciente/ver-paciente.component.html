@@ -1,0 +1,86 @@
+<div class="form-body" *ngIf="!cargando">
+
+    <div class="col">    
+        <h4 class="card-title">Información Personal</h4>
+        <div class="col">
+        <hr>            
+            <div class="text-right text-white">
+                <a class="btn btn-success"
+                   (click)="regresar()"> 
+                    <i class="fa fa-arrow-left"></i>
+                    Regresar
+                </a>
+            </div>
+    
+        </div>
+        
+        <div class="row p-t-10">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Apellido</label>
+                    <input type="text" class="form-control" placeholder="{{pacienteSeleccionado.apellido}}" readonly>
+                </div>
+            </div>
+            <!--/span-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Nombre</label>
+                    <input type="text" class="form-control" placeholder="{{pacienteSeleccionado.nombre}}" readonly>
+                </div>
+            </div>
+            <!--/span-->
+
+        </div>
+
+        <div class="row p-t-10">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Fecha Nacimiento</label>
+                    <input type="text" class="form-control" placeholder="{{pacienteSeleccionado.fechaNac}}" readonly>
+                </div>
+            </div>
+            <!--/span-->
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Obra Social</label>
+                    <input type="text" class="form-control" placeholder="{{pacienteSeleccionado.obraSocial.nombre}}" readonly>
+                </div>
+            </div>
+            <!--/span-->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Número Afiliado</label>
+                    <input type="text" class="form-control" placeholder="{{pacienteSeleccionado.numeroAfiliado}}" readonly>
+                </div>
+            </div>
+            <br>
+            <!--/span-->
+        </div>   
+    </div>
+   
+    <div class="col">
+        <h4 class="card-title">Historia Clínica</h4>
+        <hr>
+
+            <textarea class="form-control" 
+                      type="text"
+                      #txtAreaHC
+                      rows="13" >{{pacienteSeleccionado.historiaClinica}}</textarea>
+
+    </div>
+
+    <div class="col">
+        
+        <button class="btn btn-success btn-block"
+                (click)="guardarHC(txtAreaHC.value)">
+            <i class="fa fa-save"></i>
+            Guardar
+        </button>
+
+    </div>
+
+
+</div>

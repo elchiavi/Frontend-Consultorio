@@ -1,0 +1,173 @@
+<div class="card-body">
+    
+    <div class="col">
+                    
+        <div class="text-right text-white">
+            <a class="btn btn-success"
+               (click)="regresar()"> 
+                <i class="fa fa-arrow-left"></i>
+                Regresar
+            </a>
+        </div>
+
+    </div>
+
+    <h4 class="card-title">Creación de Pacientes</h4>
+
+    <form class="form p-t-20"
+          id="newPaciente"
+          autocomplete="off"
+          (ngSubmit)="crearPaciente()"
+          [formGroup]="pacienteForm">
+
+        <div class="form-group">
+            <label for="exampleInputuname">Apellido</label>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control"
+                       formControlName="apellido">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('apellido')">El Apellido es obligatorio</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputuname">Nombre</label>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control"
+                       formControlName="nombre">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('nombre')">El nombre es obligatorio</small>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="exampleInputuname">DNI</label>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control"
+                       formControlName="dni">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('dni')">El DNI es obligatorio</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputuname">Obra Social</label>
+            <div class="input-group">
+                    <select class="form-control"
+                             formControlName="obraSocial"
+                             (change)="validarNroAfiliado()">
+                                <option value="">Seleccionar Obra Social</option> 
+                                <option *ngFor="let os of obrasSociales"
+                                [value]="os._id">{{os.nombre}}</option>
+                    </select>
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('obraSocial')">La obra social es obligatoria</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputuname">Número Afiliado</label>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control"
+                       formControlName="numeroAfiliado">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('numeroAfiliado')">El número de afiliado es obligatorio</small>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="exampleInputEmail1">E-mail</label>
+            <div class="input-group">
+                <input type="email" 
+                       class="form-control"
+                       formControlName="email">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('email')">El E-mail debe ser válido</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Fecha de Nacimiento</label>
+            <div class="input-group">
+                <input type="date" 
+                       class="form-control"
+                       formControlName="fechaNac" 
+                       placeholder="dd/mm/yyyy">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('fechaNac')">La Fecha de Nacimiento es obligatoria</small>
+            </div>
+        </div>
+       
+
+        <div class="form-group">
+            <label for="exampleInputuname">Género</label>
+            <div class="input-group">
+                    <select class="form-control"
+                             formControlName="sexo">
+                        <option value="">Seleccione Género</option>
+                        <option value="F">Femenino</option>
+                        <option value="M">Masculino</option>
+                    </select>
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('sexo')">El Género es obligatorio</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputuname">Teléfono</label>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control"
+                       formControlName="telefono">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('telefono')">El teléfono es obligatorio</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputuname">Dirección</label>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control"
+                       formControlName="direccion">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('direccion')">La dirección es obligatoria</small>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="exampleInputuname">Ciudad</label>
+            <div class="input-group">
+                <input type="text" 
+                       class="form-control"
+                       formControlName="ciudad">
+            </div>
+            <div class="col text-danger">
+                <small *ngIf="campoNoValido('ciudad')">La ciudad es obligatoria</small>
+            </div>
+        </div>      
+
+
+
+        <button type="submit"
+                class="btn btn-success btn-block">
+                Guardar
+        </button>
+
+    </form>
+</div>
