@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+
 import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
@@ -9,7 +11,7 @@ import { UsuarioService } from '../../services/usuario.service';
   templateUrl: './login.component.html',
   styleUrls: [ './login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   public loginForm = this.fb.group({
     email:    [localStorage.getItem('email') || '', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
@@ -18,10 +20,17 @@ export class LoginComponent implements OnInit {
     });
 
     public formSubmited = false;
+    public subscriptions = new Subscription();
 
   constructor( private fb: FormBuilder,
                private usuarioService: UsuarioService,
                private router: Router) { }
+
+  ngOnDestroy(): void {
+
+    this.subscriptions.unsubscribe();
+
+  }
 
   ngOnInit(): void {
   }
@@ -34,7 +43,7 @@ export class LoginComponent implements OnInit {
       return;
      }
 
-    this.usuarioService.login(this.loginForm.value)
+    this.subscriptions.add(this.usuarioService.login(this.loginForm.value)
     .subscribe( resp => {
       if ( this.loginForm.get('remember').value) {
           localStorage.setItem('email', this.loginForm.get('email').value);
@@ -46,7 +55,7 @@ export class LoginComponent implements OnInit {
 
     }, (err) => {
       Swal.fire('Error', err.error.msg, 'error');
-    });
+    }));
   }
 
   campoNoValido( campo: string): boolean {

@@ -1,0 +1,189 @@
+<div class="row">
+
+  <div class="col-md-6">
+
+    <div class="btn-group">
+
+        <div class="btn btn-outline-success"
+            mwlCalendarPreviousView
+            [view]="'week'"
+            [(viewDate)]="viewDate">
+          Anterior
+        </div>
+
+        <div class="btn btn-success"
+            mwlCalendarToday
+            [(viewDate)]="viewDate">
+          Hoy
+        </div>
+
+        <div class="btn btn-outline-success"
+            mwlCalendarNextView
+            [view]="'week'"
+            [(viewDate)]="viewDate">
+          Siguiente
+        </div>
+        
+      </div>
+
+    </div>
+
+  <div class="col-md-6 text-right">
+    <h3>{{ viewDate | calendarDate:('weekViewTitle') }}</h3>
+  </div>
+
+</div>
+<br />
+
+<mwl-calendar-week-view [viewDate]="viewDate"
+                        [events]="turnos"
+                        (eventClicked)="turnoClick($event)"
+                        [dayStartHour]="8"
+                        [dayEndHour]="20">
+</mwl-calendar-week-view>
+<br>
+
+<button class="btn-flotante btn-success btn btn-circle btn-xl"
+        (click)="abrirModal()">
+  <i class="fa fa-calendar-plus-o text-white"></i>
+</button>
+
+
+<ng-template #modalContent let-close="close">
+
+            <div class="modal-content">
+              <div class="modal-header">
+                  <h4 *ngIf="turnoSeleccionado === null" class="modal-title"><strong>Nuevo Turno</strong></h4>
+                  <h4 *ngIf="turnoSeleccionado !== null" class="modal-title"><strong>Actualizar Turno</strong></h4>
+              </div>
+              <div class="modal-body">
+                <form autocomplete="off"
+                      [formGroup]="turnoForm"
+                      (ngSubmit)="crearTurno()">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">
+                          Titulo
+                        </label>
+                        <input class="form-control" 
+                               type="text"
+                               formControlName="title">
+                      </div>
+                      <div class="col text-danger">
+                        <small *ngIf="campoNoValido('title')">El Titulo es obligatorio</small>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">
+                          Tipo Turno
+                        </label>
+                        <select class="form-control" 
+                                formControlName="tipo"> 
+                                <option value="Cirugía">Cirugía</option>
+                                <option value="Consulta">Consulta</option>
+                                <option value="Endodoncia">Endodoncia</option>
+                                <option value="Operatoria">Operatoria</option>
+                                <option value="Ortodoncia">Ortodoncia</option>
+                                <option value="Periodoncia">Periodoncia</option>
+                        </select>
+                      </div>
+                      <div class="col text-danger">
+                        <small *ngIf="campoNoValido('tipo')">El Tipo es obligatorio</small>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                      
+                        <div class="form-group">
+                          <label class="control-label">
+                            Desde
+                          </label>
+                            <input class="form-control"
+                                   formControlName="start" 
+                                   type="datetime-local">
+                        </div>
+                        <div class="col text-danger">
+                          <small *ngIf="campoNoValido('start')">La fecha desde es obligatoria</small>
+                          <small *ngIf="validarFechas()">Fechas incorrectas</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      
+                      <div class="form-group">
+                        <label class="control-label">
+                          Hasta
+                        </label>
+                          <input class="form-control" 
+                                 formControlName="end"
+                                 type="datetime-local">
+                      </div>
+                      <div class="col text-danger">
+                        <small *ngIf="campoNoValido('end')">La fecha hasta es obligatoria</small>
+                        <small *ngIf="validarFechas()">Fechas incorrectas</small>
+                      </div>
+                  </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="control-label">
+                          Paciente
+                        </label>
+                        <select class="form-control"
+                                formControlName="paciente"> 
+                          <option *ngFor="let paciente of pacientes"
+                          [value]="paciente._id">{{paciente.apellido}}, {{paciente.nombre}}</option>
+                        </select>
+                      </div>
+                      <div class="col text-danger">
+                        <small *ngIf="campoNoValido('paciente')">El Paciente es obligatorio</small>
+                      </div>
+                    </div>                 
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success save-event waves-effect waves-light">Guardar</button>
+                    <button type="button" class="btn btn-danger waves-effect text-left" data-closed="modal" (click)="cerrarModal()">Cerrar</button>
+                  </div>
+                  
+                </form>
+              </div>
+
+          </div>
+  
+</ng-template> 
+
+<ng-template #modalContent2 let-close="close">
+  <div class="modal-header">
+    <h4 class="modal-title"><strong>Ver Turno</strong></h4>
+    <div>
+      <i (click)="actualizarTurno(turnoSeleccionado)" class="fa fa-pencil cursor mr-3"></i>
+      <i (click)="eliminarTurno(turnoSeleccionado)" class="fa fa-trash cursor"></i>
+    </div>
+    
+  </div>
+
+<div class="modal-body">
+
+ 
+    <h4><i class="fa fa-pencil"></i><strong> Titulo:</strong> <small> {{turnoSeleccionado.title}}</small></h4>
+    <h4><i class="fa fa-chevron-right"></i><strong> Tipo:</strong> <small> {{turnoSeleccionado.tipo}}</small></h4>
+    <h4><i class="fa fa-user"></i><strong> Paciente:</strong> <small> {{turnoSeleccionado.paciente.apellido}}, {{turnoSeleccionado.paciente.nombre}}</small></h4>
+    <h4><i class="fa fa-calendar"></i><strong> Desde:</strong> <small> {{turnoSeleccionado.start | date:'dd/MM/yyyy hh:mm a'}}</small> </h4>
+    <h4><i class="fa fa-calendar"></i><strong> Hasta:</strong> <small> {{turnoSeleccionado.end |date:'dd/MM/yyyy hh:mm a'}}</small> </h4>
+
+
+</div>
+
+<div class="modal-footer">
+
+  <button type="button" class="btn btn-success waves-effect text-left" data-dismiss="modal" (click)="cerrarModal()">Cerrar</button>
+</div>
+
+
+
+
+</ng-template>

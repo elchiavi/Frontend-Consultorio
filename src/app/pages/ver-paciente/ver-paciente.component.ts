@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Paciente } from 'src/app/models/paciente.model';
-import { PacientesService } from '../../services/pacientes.service';
+import { Subscription } from 'rxjs';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
+
+import { Paciente } from 'src/app/models/paciente.model';
+import { PacientesService } from '../../services/pacientes.service';
 
 @Component({
   selector: 'app-ver-paciente',
@@ -11,9 +13,10 @@ import Swal from 'sweetalert2';
   styles: [
   ]
 })
-export class VerPacienteComponent implements OnInit {
+export class VerPacienteComponent implements OnInit, OnDestroy {
 
   public cargando = false;
+  public subscriptions = new Subscription();
   public fecha: Date;
   public pacienteSeleccionado: Paciente ;
 
@@ -29,28 +32,34 @@ export class VerPacienteComponent implements OnInit {
                        .subscribe( ({id}) => this.cargarPacientePorId(id));
   }
 
+  ngOnDestroy(): void {
+
+    this.subscriptions.unsubscribe();
+
+  }
+
   cargarPacientePorId( id: string) {
 
     this.cargando = true;
-    this.pacienteService.buscarPacientePorId( id )
+    this.subscriptions.add(this.pacienteService.buscarPacientePorId( id )
         .subscribe( paciente => {
 
-          if(!paciente) {
+          if (!paciente) {
             return this.router.navigateByUrl('/dashboard/pacientes'); // si no existe(manipulan url) los saco
           }
 
           this.pacienteSeleccionado = paciente;
           this.cargando = false;
-        });
+        }));
 
   }
 
   guardarHC( histCli: string) {
 
     this.pacienteSeleccionado.historiaClinica = histCli;
-    this.pacienteService.actualizarPaciente( this.pacienteSeleccionado ).subscribe( resp => {
+    this.subscriptions.add(this.pacienteService.actualizarPaciente( this.pacienteSeleccionado ).subscribe( resp => {
       Swal.fire('Actualizado', 'Historia Clínica actualizada', 'success');
-    });
+    }));
   }
 
   regresar() {

@@ -73,8 +73,8 @@
                                     <span *ngIf="!obraSocial.activo" class="label label-danger">Inactiva</span>
                                 </td>
                                 <td class="text-nowrap text-center">
-                                    <a (click)="actualizarObraSocial(obraSocial)" class="cursor" data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a (click)="activarInactivarObraSocial(obraSocial)" class="cursor" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a (click)="actualizarObraSocial(obraSocial)" class="cursor" title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a (click)="activarInactivarObraSocial(obraSocial)" class="cursor" title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -89,7 +89,7 @@
                     &nbsp;
                     <button (click)="cambiarPagina(5)" 
                             class="btn btn-success" 
-                            [disabled]="paginaDesde+2>=totalObrasSociales">
+                            [disabled]="paginaDesde+5>=totalObrasSociales">
                         Siguiente
                     </button>
                 </div>  

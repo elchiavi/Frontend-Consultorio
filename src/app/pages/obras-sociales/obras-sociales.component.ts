@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+
 import { ObrasSocialesService } from '../../services/obras-sociales.service';
 import { ObraSocial } from '../../models/obra-social.model';
-import Swal from 'sweetalert2';
 import { BusquedasService } from '../../services/busquedas.service';
+
 
 @Component({
   selector: 'app-obras-sociales',
@@ -10,16 +13,23 @@ import { BusquedasService } from '../../services/busquedas.service';
   styles: [
   ]
 })
-export class ObrasSocialesComponent implements OnInit {
+export class ObrasSocialesComponent implements OnInit, OnDestroy {
 
   public obrasSociales: ObraSocial[] = [];
   public obraSocialesFiltradas: ObraSocial[] = [];
   public paginaDesde = 0;
   public totalObrasSociales = 0;
   public cargando = false;
+  public subscriptions = new Subscription();
 
   constructor( private obraSocService: ObrasSocialesService,
                private busquedaService: BusquedasService) { }
+
+  ngOnDestroy(): void {
+
+    this.subscriptions.unsubscribe();
+
+  }
 
   ngOnInit(): void {
 
@@ -29,13 +39,13 @@ export class ObrasSocialesComponent implements OnInit {
   cargarObrasSociales() {
 
     this.cargando = true;
-    this.obraSocService.cargarObrasSociales(this.paginaDesde)
-        .subscribe( resp => {
-          this.totalObrasSociales = resp.total;
-          this.obrasSociales = resp.obrasSociales;
-          this.obraSocialesFiltradas = resp.obrasSociales;
-          this.cargando = false;
-        });
+    this.subscriptions.add(this.obraSocService.cargarObrasSociales(this.paginaDesde)
+    .subscribe( resp => {
+      this.totalObrasSociales = resp.total;
+      this.obrasSociales = resp.obrasSociales;
+      this.obraSocialesFiltradas = resp.obrasSociales;
+      this.cargando = false;
+    }));
 
   }
 
@@ -51,18 +61,18 @@ export class ObrasSocialesComponent implements OnInit {
 
     if (value.trim().length > 0){
 
-      this.obraSocService.crearObraSocial(value)
+      this.subscriptions.add(this.obraSocService.crearObraSocial(value)
           .subscribe( (resp: any) => {
             this.obrasSociales.push(resp);
             this.cargarObrasSociales();
-          });
+          }));
     }
 
   }
 
   activarInactivarObraSocial( obraSoc: ObraSocial ) {
 
-    this.obraSocService.activarInactivarObraSocial( obraSoc._id, obraSoc.nombre )
+    this.subscriptions.add(this.obraSocService.activarInactivarObraSocial( obraSoc._id, obraSoc.nombre )
         .subscribe( resp => {
           if ( obraSoc.activo) {
             Swal.fire('Inactivada', `${obraSoc.nombre} inactivada correctamente`, 'success');
@@ -74,7 +84,7 @@ export class ObrasSocialesComponent implements OnInit {
           // si sucede un error
           Swal.fire('Error', err.error.msg, 'error');
 
-        });
+        }));
   }
 
   async actualizarObraSocial( obraSoc: ObraSocial) {
@@ -87,9 +97,9 @@ export class ObrasSocialesComponent implements OnInit {
       showCancelButton: true
     });
 
-    if(value.trim().length > 0){
+    if (value.trim().length > 0){
       obraSoc.nombre = value;
-      this.obraSocService.actualizarObraSocial( obraSoc._id, obraSoc.nombre ).subscribe( resp => console.log(resp));
+      this.subscriptions.add(this.obraSocService.actualizarObraSocial( obraSoc._id, obraSoc.nombre ).subscribe( resp => console.log(resp)));
     }
   }
 
@@ -104,10 +114,10 @@ export class ObrasSocialesComponent implements OnInit {
       return;
     }
 
-    this.busquedaService.buscar('obrasSociales', termino)
+    this.subscriptions.add(this.busquedaService.buscar('obrasSociales', termino)
         .subscribe( (resultados: any) => {
             this.obrasSociales = resultados;
-        });
+        }));
   }
 
   cambiarPagina( valor: number) {

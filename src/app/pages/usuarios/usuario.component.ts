@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { UsuarioService } from '../../services/usuario.service';
-import Swal from 'sweetalert2';
+
+
 
 @Component({
   selector: 'app-usuario',
@@ -11,9 +14,10 @@ import Swal from 'sweetalert2';
   styles: [
   ]
 })
-export class UsuarioComponent implements OnInit {
+export class UsuarioComponent implements OnInit, OnDestroy {
 
   public formSubmited = false;
+  public subscriptions = new Subscription();
 
   public userForm = this.fb.group({
     nombre: ['', Validators.required ],
@@ -30,6 +34,12 @@ export class UsuarioComponent implements OnInit {
                private location: Location) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+
+    this.subscriptions.unsubscribe();
+
   }
 
   passIguales(pass1name: string, pass2name: string) {
@@ -84,13 +94,15 @@ export class UsuarioComponent implements OnInit {
 
     const { nombre } = this.userForm.value;
 
-    this.usuarioService.crearUsuario( this.userForm.value)
+    this.subscriptions.add(this.usuarioService.crearUsuario( this.userForm.value)
         .subscribe( (resp: any) => {
           Swal.fire('Creado', `${nombre} creado correctamente`, 'success');
+          this.formSubmited = false;
+          this.userForm.reset();
         }, (err) => {
           // si sucede un error
           Swal.fire('Error', err.error.msg, 'error');
-        });
+        }));
   }
 
   regresar() {

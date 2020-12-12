@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { PacientesService } from '../../services/pacientes.service';
-import { ObrasSocialesService } from '../../services/obras-sociales.service';
 import { ObraSocial } from '../../models/obra-social.model';
-import Swal from 'sweetalert2';
-import { element } from 'protractor';
+import { BusquedasService } from '../../services/busquedas.service';
+
 
 
 @Component({
@@ -16,10 +17,11 @@ import { element } from 'protractor';
   styles: [
   ]
 })
-export class NewPacienteComponent implements OnInit {
+export class NewPacienteComponent implements OnInit, OnDestroy {
 
   public formSubmited = false;
   public obrasSociales: ObraSocial[] = [];
+  public subscriptions = new Subscription();
 
   public pacienteForm = this.fb.group({
     apellido: ['', Validators.required ],
@@ -37,7 +39,7 @@ export class NewPacienteComponent implements OnInit {
 
   constructor( private fb: FormBuilder,
                private pacienteService: PacientesService,
-               private obraSocServices: ObrasSocialesService,
+               private busquedasServices: BusquedasService,
                private activatedRoute: ActivatedRoute,
                private location: Location) { }
 
@@ -47,6 +49,12 @@ export class NewPacienteComponent implements OnInit {
     .subscribe( ({id}) => this.cargarPacienteId( id ));
 
     this.cargarObrasSociales();
+  }
+
+  ngOnDestroy(): void {
+
+    this.subscriptions.unsubscribe();
+
   }
 
   regresar() {
@@ -69,10 +77,10 @@ export class NewPacienteComponent implements OnInit {
 
   cargarObrasSociales() {
 
-    this.obraSocServices.cargarObrasSociales()
+    this.subscriptions.add(this.busquedasServices.cargarObrasSocialesActivas()
         .subscribe(  resp => {
-          this.obrasSociales = resp.obrasSociales;
-        });
+          this.obrasSociales = resp;
+        }));
 
   }
 
@@ -87,7 +95,7 @@ export class NewPacienteComponent implements OnInit {
     this.pacienteForm.get('numeroAfiliado').enable();
     const { apellido, nombre } = this.pacienteForm.value;
 
-    this.pacienteService.crearPaciente( this.pacienteForm.value)
+    this.subscriptions.add(this.pacienteService.crearPaciente( this.pacienteForm.value)
     .subscribe( (resp: any) => {
       Swal.fire('Creado', `Paciente ${apellido}, ${nombre} creado correctamente`, 'success');
       this.formSubmited = false;
@@ -95,7 +103,7 @@ export class NewPacienteComponent implements OnInit {
     }, (err) => {
       // si sucede un error
       Swal.fire('Error', err.error.msg, 'error');
-    });
+    }));
 
   }
 
@@ -109,6 +117,7 @@ export class NewPacienteComponent implements OnInit {
     if ( nombreOS === 'Particular') {
 
       this.pacienteForm.get('numeroAfiliado').disable();
+      // tslint:disable-next-line: no-string-literal
       this.pacienteForm.controls['numeroAfiliado'].setValue('-');
 
     } else {

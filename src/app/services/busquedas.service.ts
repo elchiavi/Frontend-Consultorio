@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
 import { Usuario } from '../models/usuario.model';
 import { Paciente } from '../models/paciente.model';
 import { ObraSocial } from '../models/obra-social.model';
+import { CargarObraSocial } from '../interfaces/cargar-obra-social';
+import { CargarTurno } from '../interfaces/cargar-turno';
 
 
 const base_url = environment.base_url;
@@ -62,6 +64,29 @@ export class BusquedasService {
                            pac.historiaClinica, pac.activo, pac.usuario, pac._id  )
     );
 
+  }
+
+  cargarObrasSocialesActivas() {
+
+    const url = `${base_url}/busquedas/obrasSociales/activas`;
+    return this.http.get<CargarObraSocial>(url).pipe(
+      map( (resp => {
+        return resp.obrasSociales;
+       })
+    ));
+  }
+
+  cargarPacientesActivos() {
+
+    const url = `${base_url}/busquedas/pacientes/activos`;
+    return this.http.get(url).pipe(
+      map( (resp: { pacientes: Paciente[], total: number}) => {
+        return {
+          total: resp.total,
+          pacientes: resp.pacientes
+        };
+      })
+    );
   }
 
 }

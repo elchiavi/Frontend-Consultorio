@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../models/usuario.model';
-import { async } from '@angular/core/testing';
-import Swal from 'sweetalert2';
 import { BusquedasService } from '../../services/busquedas.service';
+
 
 @Component({
   selector: 'app-usuarios',
@@ -11,13 +13,14 @@ import { BusquedasService } from '../../services/busquedas.service';
   styles: [
   ]
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
   public usuarios: Usuario[] = [];
   public usuariosFiltrados: Usuario[] = [];
   public paginaDesde = 0;
   public totalUsuarios = 0;
   public cargando = false;
+  public subscriptions = new Subscription();
 
   constructor( private usuarioService: UsuarioService,
                private busquedaService: BusquedasService) { }
@@ -27,23 +30,29 @@ export class UsuariosComponent implements OnInit {
     this.cargarUsuarios();
   }
 
+  ngOnDestroy(): void {
+
+    this.subscriptions.unsubscribe();
+
+  }
+
   cargarUsuarios() {
 
     this.cargando = true;
-    this.usuarioService.cargarUsuarios(this.paginaDesde)
+    this.subscriptions.add(this.usuarioService.cargarUsuarios(this.paginaDesde)
         .subscribe( usuarios => {
           this.totalUsuarios = usuarios.total;
           this.usuarios = usuarios.usuarios;
           this.usuariosFiltrados = usuarios.usuarios;
           this.cargando = false;
 
-    });
+    }));
 
   }
 
   cambiarRol( usuario: Usuario ) {
 
-    this.usuarioService.guardarUsuario( usuario ).subscribe( resp => console.log(resp));
+    this.subscriptions.add(this.usuarioService.guardarUsuario( usuario ).subscribe( resp => console.log(resp)));
   }
 
   async cambiarNombre( usuario: Usuario) {
@@ -56,9 +65,9 @@ export class UsuariosComponent implements OnInit {
       showCancelButton: true
     });
 
-    if(value.trim().length > 0){
+    if (value.trim().length > 0){
       usuario.nombre = value;
-      this.usuarioService.guardarUsuario( usuario ).subscribe( resp => console.log(resp));
+      this.subscriptions.add(this.usuarioService.guardarUsuario( usuario ).subscribe( resp => console.log(resp)));
       this.cargarUsuarios();
     }
   }
@@ -79,7 +88,7 @@ export class UsuariosComponent implements OnInit {
       }).then((result) => {
           if (result.isConfirmed) {
 
-              this.usuarioService.inactivarUsuario( usuario )
+              this.subscriptions.add(this.usuarioService.inactivarUsuario( usuario )
                   .subscribe( resp => {
                     if ( usuario.activo) {
                       Swal.fire('Inactivado', `${usuario.nombre} inactivado correctamente`, 'success');
@@ -90,7 +99,7 @@ export class UsuariosComponent implements OnInit {
                   }, (err) => {
                     // si sucede un error
                     Swal.fire('Error', err.error.msg, 'error');
-                  });
+                  }));
               }
         });
   }
@@ -106,10 +115,10 @@ export class UsuariosComponent implements OnInit {
       return;
     }
 
-    this.busquedaService.buscar('usuarios', termino)
+    this.subscriptions.add(this.busquedaService.buscar('usuarios', termino)
         .subscribe( (resultados: any) => {
             this.usuarios = resultados;
-        });
+        }));
   }
 
   cambiarPagina( valor: number) {

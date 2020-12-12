@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
+
 import { Paciente } from '../models/paciente.model';
 
 const base_url = environment.base_url;
@@ -43,6 +44,12 @@ export class PacientesService {
   crearPaciente( data: Paciente) {
 
     return this.http.post(`${base_url}/pacientes`, data);
+  }
+
+  activarInactivarPaciente( id: string, nombre: string) {
+
+    const url = `${base_url}/pacientes/inac/${id}`;
+    return this.http.put(url, {nombre});
   }
 
 

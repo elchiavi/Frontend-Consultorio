@@ -83,8 +83,8 @@
                                     <span *ngIf="!usuario.activo" class="label label-danger">Inactivo</span>
                                 </td>
                                 <td class="text-nowrap text-center">
-                                    <a (click)="cambiarNombre(usuario)" class="cursor" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a (click)="inactivarUsuario(usuario)" class="cursor" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a (click)="cambiarNombre(usuario)" class="cursor" title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a (click)="inactivarUsuario(usuario)" class="cursor" title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -100,7 +100,7 @@
                     &nbsp;
                     <button (click)="cambiarPagina(5)" 
                             class="btn btn-success" 
-                            [disabled]="paginaDesde+2>=totalUsuarios">
+                            [disabled]="paginaDesde+5>=totalUsuarios">
                         Siguiente
                     </button>
                 </div>
