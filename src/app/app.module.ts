@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 
+
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorLoginService } from './interceptors/interceptor-login.service';
 
@@ -16,10 +17,11 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    NopagefoundComponent
+    NopagefoundComponent,
   ],
   imports: [
     BrowserModule,

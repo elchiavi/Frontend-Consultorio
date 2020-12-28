@@ -12,12 +12,13 @@
 
     </div>
 
-    <h4 class="card-title">Creación de Pacientes</h4>
+    <h4 *ngIf="id==='nuevo'" class="card-title">Creación de Pacientes</h4>
+    <h4 *ngIf="id!=='nuevo'" class="card-title">Actualización de Pacientes</h4>
 
     <form class="form p-t-20"
           id="newPaciente"
           autocomplete="off"
-          (ngSubmit)="crearPaciente()"
+          (ngSubmit)="guardarPaciente()"
           [formGroup]="pacienteForm">
 
         <div class="form-group">
@@ -101,7 +102,7 @@
             <div class="input-group">
                 <input type="date" 
                        class="form-control"
-                       formControlName="fechaNac" 
+                       formControlName="fechaNac"
                        placeholder="dd/mm/yyyy">
             </div>
             <div class="col text-danger">

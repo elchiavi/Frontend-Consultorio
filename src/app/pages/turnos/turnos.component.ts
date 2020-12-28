@@ -10,6 +10,12 @@ import { TurnosService } from '../../services/turnos.service';
 import { Paciente } from '../../models/paciente.model';
 import { BusquedasService } from '../../services/busquedas.service';
 
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  }};
+
 @Component({
   selector: 'app-turnos',
   templateUrl: './turnos.component.html',
@@ -68,6 +74,9 @@ export class TurnosComponent implements OnInit, OnDestroy {
           const fechaEnd = new Date(event.end);
           fechaEnd.setHours(fechaEnd.getHours() + 3);
           event.end = fechaEnd;
+          if (!event.asistio) {
+            event.color = colors.red;
+          }
       });
       this.turnos = resp.turnos;
       this.cargando = false;
@@ -113,6 +122,25 @@ export class TurnosComponent implements OnInit, OnDestroy {
       return true;
     } else {
       return false;
+    }
+  }
+
+  confirmarAsistencia() {
+
+    this.turnoSeleccionado.asistio = true;
+    if (this.turnoSeleccionado !== null) {
+
+      this.subscriptions.add(this.turnosService.confirmarTurno(this.turnoSeleccionado._id, this.turnoSeleccionado.title)
+        .subscribe( (resp: any) => {
+          Swal.fire('Confirmado', 'Turno confirmado', 'success');
+          this.cerrarModal();
+          this.cargarTurnos();
+        }, (err) => {
+          // si sucede un error
+          Swal.fire('Error', err.error.msg, 'error');
+          console.log(err);
+        }));
+
     }
   }
 

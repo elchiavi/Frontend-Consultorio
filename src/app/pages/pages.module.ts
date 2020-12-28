@@ -18,6 +18,8 @@ import { TurnosComponent } from './turnos/turnos.component';
 import { VerPacienteComponent } from './ver-paciente/ver-paciente.component';
 import { NewPacienteComponent } from './pacientes/new-paciente.component';
 
+import { GraficsModule } from '../grafics/grafics.module';
+
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { NewPacienteComponent } from './pacientes/new-paciente.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    GraficsModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

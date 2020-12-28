@@ -22,4 +22,10 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout() {
+
+    this.usuarioService.logout();
+
+  }
+
 }

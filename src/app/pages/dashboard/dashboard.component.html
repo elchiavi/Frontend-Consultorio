@@ -1,1 +1,16 @@
-<p>Dashboard works!</p>
+<div class="row">
+    <div class="col-6">
+        <app-circular title="Obras Sociales por Pacientes Activos: ({{obrasSociales.length}})"
+                     [labels]="obrasSociales"
+                     [data]="cantidadPorOs">
+        </app-circular>
+
+    </div>
+
+    <div class="col-6">
+        <app-circular title="Tipos de Prestación por Turno ({{meses[actual.getMonth()]}})"
+                  [labels]="tiposPrestaciones"
+                  [data]="cantidadPorPres">
+        </app-circular>
+    </div>
+</div>

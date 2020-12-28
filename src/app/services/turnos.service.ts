@@ -46,4 +46,14 @@ export class TurnosService {
 
   }
 
+  confirmarTurno( id: string, nombre: string ) {
+
+    const url = `${base_url}/turnos/confirmar/${id}`;
+    return this.http.put(url, {nombre});
+
+
+
+  }
+
+
 }

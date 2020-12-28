@@ -174,8 +174,11 @@
     <h4><i class="fa fa-user"></i><strong> Paciente:</strong> <small> {{turnoSeleccionado.paciente.apellido}}, {{turnoSeleccionado.paciente.nombre}}</small></h4>
     <h4><i class="fa fa-calendar"></i><strong> Desde:</strong> <small> {{turnoSeleccionado.start | date:'dd/MM/yyyy hh:mm a'}}</small> </h4>
     <h4><i class="fa fa-calendar"></i><strong> Hasta:</strong> <small> {{turnoSeleccionado.end |date:'dd/MM/yyyy hh:mm a'}}</small> </h4>
-
-
+    <h4 *ngIf="turnoSeleccionado.asistio" ><i class="fa fa-check"></i><strong> Asistió:</strong> <small> Sí</small></h4>
+    <h4 *ngIf="!turnoSeleccionado.asistio"><i class="fa fa-check-circle"></i><strong> Asistió:</strong> <small> No</small></h4>
+    <br>
+    <button *ngIf="!turnoSeleccionado.asistio" type="button" class="btn waves-effect waves-light btn-sm btn-success" (click)="confirmarAsistencia()"><i class="fa fa-check"></i> Confirmar Asistencia</button>
+    
 </div>
 
 <div class="modal-footer">

@@ -7,6 +7,7 @@ export class Turno {
         public tipo: string,
         public start: Date,
         public end: Date,
+        public asistio: boolean,
         public paciente: Paciente,
         public usuario: string,
         public _id: string

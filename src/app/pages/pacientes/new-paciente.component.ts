@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { PacientesService } from '../../services/pacientes.service';
 import { ObraSocial } from '../../models/obra-social.model';
 import { BusquedasService } from '../../services/busquedas.service';
+import { Paciente } from 'src/app/models/paciente.model';
 
 
 
@@ -19,6 +20,9 @@ import { BusquedasService } from '../../services/busquedas.service';
 })
 export class NewPacienteComponent implements OnInit, OnDestroy {
 
+  public id = '';
+  public cargando = false;
+  public pacienteSeleccionado: Paciente;
   public formSubmited = false;
   public obrasSociales: ObraSocial[] = [];
   public subscriptions = new Subscription();
@@ -40,13 +44,24 @@ export class NewPacienteComponent implements OnInit, OnDestroy {
   constructor( private fb: FormBuilder,
                private pacienteService: PacientesService,
                private busquedasServices: BusquedasService,
-               private activatedRoute: ActivatedRoute,
+               private route: ActivatedRoute,
+               private router: Router,
                private location: Location) { }
 
   ngOnInit(): void {
 
-    this.activatedRoute.params
-    .subscribe( ({id}) => this.cargarPacienteId( id ));
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id !== 'nuevo') {
+      this.subscriptions.add(this.pacienteService.buscarPacientePorId(this.id).
+        subscribe( (pac: Paciente) => {
+            if (!pac) {
+              return this.router.navigateByUrl('/dashboard/pacientes'); // si no existe(manipulan url) los saco
+            }
+            this.pacienteSeleccionado = pac;
+            this.cargarcampos(this.pacienteSeleccionado);
+            this.cargando = false;
+        }));
+    }
 
     this.cargarObrasSociales();
   }
@@ -61,9 +76,6 @@ export class NewPacienteComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  cargarPacienteId( id: string ) {
-
-  }
 
   campoNoValido( campo: string): boolean {
 
@@ -71,6 +83,27 @@ export class NewPacienteComponent implements OnInit, OnDestroy {
       return true;
     } else{
       return false;
+    }
+
+  }
+
+  cargarcampos( paciente: Paciente ){
+
+    this.pacienteForm.patchValue({['apellido']: paciente.apellido});
+    this.pacienteForm.patchValue({['nombre']: paciente.nombre});
+    this.pacienteForm.patchValue({['dni']: paciente.dni});
+    this.pacienteForm.patchValue({['obraSocial']: paciente.obraSocial._id});
+    this.pacienteForm.patchValue({['numeroAfiliado']: paciente.numeroAfiliado});
+    this.pacienteForm.patchValue({['email']: paciente.email});
+    this.pacienteForm.patchValue({['fechaNac']: paciente.fechaNac});
+    this.pacienteForm.patchValue({['sexo']: paciente.sexo});
+    this.pacienteForm.patchValue({['telefono']: paciente.telefono});
+    this.pacienteForm.patchValue({['direccion']: paciente.direccion});
+    this.pacienteForm.patchValue({['ciudad']: paciente.ciudad});
+
+    if ( paciente.obraSocial.nombre === 'Particular') {
+
+      this.pacienteForm.get('numeroAfiliado').disable();
     }
 
   }
@@ -84,8 +117,7 @@ export class NewPacienteComponent implements OnInit, OnDestroy {
 
   }
 
-
-  crearPaciente() {
+  guardarPaciente() {
 
     this.formSubmited = true;
 
@@ -95,16 +127,29 @@ export class NewPacienteComponent implements OnInit, OnDestroy {
     this.pacienteForm.get('numeroAfiliado').enable();
     const { apellido, nombre } = this.pacienteForm.value;
 
-    this.subscriptions.add(this.pacienteService.crearPaciente( this.pacienteForm.value)
-    .subscribe( (resp: any) => {
-      Swal.fire('Creado', `Paciente ${apellido}, ${nombre} creado correctamente`, 'success');
-      this.formSubmited = false;
-      this.pacienteForm.reset();
-    }, (err) => {
-      // si sucede un error
-      Swal.fire('Error', err.error.msg, 'error');
-    }));
+    if (this.id !== 'nuevo') {
 
+      this.subscriptions.add(this.pacienteService.actualizarPaciente( this.pacienteSeleccionado._id, this.pacienteForm.value)
+      .subscribe( (resp: any) => {
+        Swal.fire('Actualizado', `Paciente ${apellido}, ${nombre} actualizado correctamente`, 'success');
+        this.formSubmited = false;
+        this.pacienteForm.reset();
+      }, (err) => {
+        // si sucede un error
+        Swal.fire('Error', err.error.msg, 'error');
+      }));
+
+    } else {
+        this.subscriptions.add(this.pacienteService.crearPaciente( this.pacienteForm.value)
+        .subscribe( (resp: any) => {
+          Swal.fire('Creado', `Paciente ${apellido}, ${nombre} creado correctamente`, 'success');
+          this.formSubmited = false;
+          this.pacienteForm.reset();
+        }, (err) => {
+          // si sucede un error
+          Swal.fire('Error', err.error.msg, 'error');
+        }));
+      }
   }
 
   validarNroAfiliado() {

@@ -57,7 +57,8 @@ export class VerPacienteComponent implements OnInit, OnDestroy {
   guardarHC( histCli: string) {
 
     this.pacienteSeleccionado.historiaClinica = histCli;
-    this.subscriptions.add(this.pacienteService.actualizarPaciente( this.pacienteSeleccionado ).subscribe( resp => {
+    this.subscriptions.add(this.pacienteService.actualizarPaciente(
+         this.pacienteSeleccionado._id, this.pacienteSeleccionado ).subscribe( resp => {
       Swal.fire('Actualizado', 'Historia Clínica actualizada', 'success');
     }));
   }

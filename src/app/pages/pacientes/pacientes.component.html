@@ -65,7 +65,7 @@
                                 <th class="w140">DNI</th>
                                 <th>Obra Social</th>
                                 <th class="w100">Estado</th>
-                                <th class="text-nowrap w100">Actiones</th>
+                                <th class="text-nowrap w100">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,7 +80,7 @@
                                 </td>
                                 <td class="text-nowrap text-center">
                                     <a (click)="verPaciente(paciente._id)" class="cursor" title="Ver"> <i class="fa fa-search text-inverse m-r-10" ></i> </a>
-                                    <a class="cursor" title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a [routerLink]="['/dashboard/pacientes/paciente', paciente._id]" class="cursor" title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                                     <a (click)="activarInactivarPaciente(paciente)" class="cursor" title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>

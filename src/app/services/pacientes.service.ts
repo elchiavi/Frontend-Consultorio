@@ -36,9 +36,11 @@ export class PacientesService {
 
   }
 
-  actualizarPaciente( paciente: Paciente) {
+  actualizarPaciente( id: string , paciente: Paciente) {
 
-    return this.http.put(`${base_url}/pacientes/${paciente._id}`, paciente);
+    const url = `${base_url}/pacientes/${id}`;
+    console.log(url);
+    return this.http.put(url, paciente);
   }
 
   crearPaciente( data: Paciente) {
