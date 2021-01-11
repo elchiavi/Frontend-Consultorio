@@ -1,10 +1,11 @@
 import { Paciente } from './paciente.model';
+import { Prestacion } from './prestacion.model';
 
 export class Turno {
 
     constructor(
         public title: string,
-        public tipo: string,
+        public prestacion: Prestacion,
         public start: Date,
         public end: Date,
         public asistio: boolean,

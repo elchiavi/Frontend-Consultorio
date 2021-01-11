@@ -78,20 +78,16 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="control-label">
-                          Tipo Turno
+                          Prestación
                         </label>
-                        <select class="form-control" 
-                                formControlName="tipo"> 
-                                <option value="Cirugía">Cirugía</option>
-                                <option value="Consulta">Consulta</option>
-                                <option value="Endodoncia">Endodoncia</option>
-                                <option value="Operatoria">Operatoria</option>
-                                <option value="Ortodoncia">Ortodoncia</option>
-                                <option value="Periodoncia">Periodoncia</option>
+                        <select class="form-control"
+                                formControlName="prestacion"> 
+                          <option *ngFor="let prestacion of prestaciones"
+                          [value]="prestacion._id">{{prestacion.nombre}}</option>
                         </select>
                       </div>
                       <div class="col text-danger">
-                        <small *ngIf="campoNoValido('tipo')">El Tipo es obligatorio</small>
+                        <small *ngIf="campoNoValido('prestacion')">La Prestación es obligatoria</small>
                       </div>
                     </div>
                     
@@ -160,8 +156,8 @@
   <div class="modal-header">
     <h4 class="modal-title"><strong>Ver Turno</strong></h4>
     <div>
-      <i (click)="actualizarTurno(turnoSeleccionado)" class="fa fa-pencil cursor mr-3"></i>
-      <i (click)="eliminarTurno(turnoSeleccionado)" class="fa fa-trash cursor"></i>
+      <i *ngIf="!turnoSeleccionado.asistio" (click)="actualizarTurno(turnoSeleccionado)" class="fa fa-pencil cursor mr-3"></i>
+      <i *ngIf="!turnoSeleccionado.asistio" (click)="eliminarTurno(turnoSeleccionado)" class="fa fa-trash cursor"></i>
     </div>
     
   </div>
@@ -170,7 +166,7 @@
 
  
     <h4><i class="fa fa-pencil"></i><strong> Titulo:</strong> <small> {{turnoSeleccionado.title}}</small></h4>
-    <h4><i class="fa fa-chevron-right"></i><strong> Tipo:</strong> <small> {{turnoSeleccionado.tipo}}</small></h4>
+    <h4><i class="fa fa-chevron-right"></i><strong> Prestación:</strong> <small> {{turnoSeleccionado.prestacion.nombre}}</small></h4>
     <h4><i class="fa fa-user"></i><strong> Paciente:</strong> <small> {{turnoSeleccionado.paciente.apellido}}, {{turnoSeleccionado.paciente.nombre}}</small></h4>
     <h4><i class="fa fa-calendar"></i><strong> Desde:</strong> <small> {{turnoSeleccionado.start | date:'dd/MM/yyyy hh:mm a'}}</small> </h4>
     <h4><i class="fa fa-calendar"></i><strong> Hasta:</strong> <small> {{turnoSeleccionado.end |date:'dd/MM/yyyy hh:mm a'}}</small> </h4>

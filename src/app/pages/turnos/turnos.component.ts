@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { TurnosService } from '../../services/turnos.service';
 import { Paciente } from '../../models/paciente.model';
 import { BusquedasService } from '../../services/busquedas.service';
+import { Prestacion } from '../../models/prestacion.model';
 
 const colors: any = {
   red: {
@@ -29,6 +30,7 @@ export class TurnosComponent implements OnInit, OnDestroy {
   public turnos: CalendarEvent[] = [];
   public turnoSeleccionado: CalendarEvent = null;
   public pacientes: Paciente[] = [];
+  public prestaciones: Prestacion[] = [];
   public subscriptions = new Subscription();
   public cargando = false;
   public formSubmited = false;
@@ -37,7 +39,7 @@ export class TurnosComponent implements OnInit, OnDestroy {
 
   public turnoForm = this.fb.group({
     title: ['', Validators.required ],
-    tipo: ['', Validators.required ],
+    prestacion: ['', Validators.required ],
     start: ['', Validators.required ],
     end: ['', Validators.required ],
     paciente: ['', Validators.required ]
@@ -56,6 +58,7 @@ export class TurnosComponent implements OnInit, OnDestroy {
 
       this.cargarTurnos();
       this.cargarPacientes();
+      this.cargarPrestaciones();
   }
 
   ngOnDestroy(): void {
@@ -88,6 +91,14 @@ export class TurnosComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.busquedasService.cargarPacientesActivos()
     .subscribe( resp => {
           this.pacientes = resp.pacientes;
+    }));
+  }
+
+  cargarPrestaciones() {
+
+    this.subscriptions.add(this.busquedasService.cargarPrestacionesActivas()
+    .subscribe( resp => {
+          this.prestaciones = resp.prestaciones;
     }));
   }
 
@@ -208,6 +219,7 @@ export class TurnosComponent implements OnInit, OnDestroy {
     this.turnoForm.reset(event);
     this.turnoForm.patchValue({['start']: inicio.toISOString().slice(0, 16) } );
     this.turnoForm.patchValue({['end']: fin.toISOString().slice(0, 16)} );
+    this.turnoForm.patchValue({['prestacion']: event.prestacion._id});
     this.turnoForm.patchValue({['paciente']: event.paciente._id});
     this.modal.open(this.modalContent, { size: 'lg' });
 

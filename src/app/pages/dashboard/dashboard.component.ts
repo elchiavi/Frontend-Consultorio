@@ -3,6 +3,7 @@ import { BusquedasService } from '../../services/busquedas.service';
 import { Subscription } from 'rxjs';
 import { TurnosService } from '../../services/turnos.service';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -10,6 +11,13 @@ import { TurnosService } from '../../services/turnos.service';
   ]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
+  public turnosTotales = 0;
+  public turnosConAsistencia = 0;
+  public turnosSinAsistencia = 0;
+  public porcentajeAsistencia = 0;
+
+  public cargando = false;
 
   public obrasSociales: string[] = [];
   public cantidadPorOs  = new Array(50);
@@ -40,6 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   cargarPacientesPorOS() {
 
+    this.cargando = true;
     this.subscriptions.add(this.busquedasService.cargarPacientesActivos().subscribe( resp => {
               resp.pacientes.forEach( paciente => {
                 if ( !this.obrasSociales.includes(paciente.obraSocial.nombre)){
@@ -50,27 +59,36 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.cantidadPorOs[idx] ++;
 
               });
+              this.cargando = false;
     }));
   }
 
   cargarTipoPrestPorTurno() {
 
+    this.cargando = true;
     this.actual = new Date();
     this.subscriptions.add(this.turnosService.cargarTurnos().subscribe( resp => {
       resp.turnos.forEach( event => {
         const fechaStart = new Date(event.start);
         if (fechaStart.getMonth() === this.actual.getMonth()) {
-
-          if (!this.tiposPrestaciones.includes(event.tipo)) {
-            this.tiposPrestaciones.push(event.tipo);
+          this.turnosTotales ++;
+          if (event.asistio){
+            this.turnosConAsistencia ++;
+          } else {
+            this.turnosSinAsistencia ++;
+          }
+          if (!this.tiposPrestaciones.includes(event.prestacion.nombre)) {
+            this.tiposPrestaciones.push(event.prestacion.nombre);
             this.cantidadPorPres.push(0);
           }
-          const id = this.tiposPrestaciones.indexOf(event.tipo);
+          const id = this.tiposPrestaciones.indexOf(event.prestacion.nombre);
           this.cantidadPorPres[id] ++;
         }
       });
-
+      this.porcentajeAsistencia = this.turnosConAsistencia / this.turnosTotales * 100;
+      this.cargando = false;
     }));
+
   }
 
 }

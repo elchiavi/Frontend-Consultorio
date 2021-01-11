@@ -19,6 +19,8 @@ import { VerPacienteComponent } from './ver-paciente/ver-paciente.component';
 import { NewPacienteComponent } from './pacientes/new-paciente.component';
 
 import { GraficsModule } from '../grafics/grafics.module';
+import { SettingsComponent } from './settings/settings.component';
+import { PrestacionesComponent } from './prestaciones/prestaciones.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { GraficsModule } from '../grafics/grafics.module';
     UsuarioComponent,
     TurnosComponent,
     VerPacienteComponent,
-    NewPacienteComponent
+    NewPacienteComponent,
+    SettingsComponent,
+    PrestacionesComponent
   ],
   exports: [
       DashboardComponent,
@@ -41,7 +45,9 @@ import { GraficsModule } from '../grafics/grafics.module';
       UsuariosComponent,
       TurnosComponent,
       VerPacienteComponent,
-      NewPacienteComponent
+      NewPacienteComponent,
+      SettingsComponent,
+      PrestacionesComponent
   ],
   imports: [
     CommonModule,

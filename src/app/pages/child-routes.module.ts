@@ -11,6 +11,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuarios/usuario.component';
 import { ObrasSocialesComponent } from './obras-sociales/obras-sociales.component';
 import { TurnosComponent } from './turnos/turnos.component';
+import { SettingsComponent } from './settings/settings.component';
+import { PrestacionesComponent } from './prestaciones/prestaciones.component';
 
 const childRoutes: Routes = [
                     {path: '', component: DashboardComponent, data: {titulo: 'Dashboard'}}, // ruta por defecto
@@ -20,7 +22,9 @@ const childRoutes: Routes = [
                     {path: 'usuarios', canActivate: [ AdminGuard ], component: UsuariosComponent, data: {titulo: 'Usuarios'}},
                     {path: 'usuarios/:id', canActivate: [ AdminGuard ], component: UsuarioComponent, data: {titulo: 'Alta de Usuario'}},
                     {path: 'obrassociales', component: ObrasSocialesComponent, data: {titulo: 'Obras Sociales'}},
-                    {path: 'turnos', component: TurnosComponent, data: {titulo: 'Turnos'}}
+                    {path: 'turnos', component: TurnosComponent, data: {titulo: 'Turnos'}},
+                    {path: 'configuraciones', component: SettingsComponent, data: {titulo: 'Configuraciones'}},
+                    {path: 'prestaciones', component: PrestacionesComponent, data: {titulo: 'Prestaciones'}}
 
 ];
 

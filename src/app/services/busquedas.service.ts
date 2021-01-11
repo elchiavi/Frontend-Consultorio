@@ -7,7 +7,8 @@ import { Usuario } from '../models/usuario.model';
 import { Paciente } from '../models/paciente.model';
 import { ObraSocial } from '../models/obra-social.model';
 import { CargarObraSocial } from '../interfaces/cargar-obra-social';
-import { CargarTurno } from '../interfaces/cargar-turno';
+import { Prestacion } from '../models/prestacion.model';
+import { CargarPrestacion } from '../interfaces/cargar-prestacion';
 
 
 const base_url = environment.base_url;
@@ -20,7 +21,7 @@ export class BusquedasService {
   constructor( private http: HttpClient) { }
 
 
-  buscar( tipo: 'usuarios'| 'pacientes' | 'obrasSociales', termino: string) {
+  buscar( tipo: 'usuarios'| 'pacientes' | 'obrasSociales' | 'prestaciones', termino: string) {
 
     const url = `${base_url}/busquedas/coleccion/${tipo}/${termino}`;
     return this.http.get<any[]>(url)
@@ -31,6 +32,8 @@ export class BusquedasService {
                        return this.transformarUsuarios(resp.resultados);
                      case 'obrasSociales':
                        return this.transformarObraSocial(resp.resultados);
+                     case 'prestaciones':
+                       return this.transformarPrestacion(resp.resultados);
                      case 'pacientes':
                        return this.transformarPaciente(resp.resultados);
 
@@ -44,6 +47,14 @@ export class BusquedasService {
 
     return resultados.map(
       user => new Usuario(user.nombre, user.email, '', user.activo, user.google, user.rol, user.uid)
+    );
+
+  }
+
+  private transformarPrestacion( resultados: any[]): Prestacion[] {
+
+    return resultados.map(
+      prest => new Prestacion( prest.nombre, prest._id, prest.activo, prest.usuario )
     );
 
   }
@@ -74,6 +85,19 @@ export class BusquedasService {
         return resp.obrasSociales;
        })
     ));
+  }
+
+  cargarPrestacionesActivas() {
+
+    const url = `${base_url}/busquedas/prestaciones/activas`;
+    return this.http.get(url).pipe(
+      map( (resp: { prestaciones: Prestacion[], total: number}) => {
+        return {
+          total: resp.total,
+          prestaciones: resp.prestaciones
+        };
+      })
+    );
   }
 
   cargarPacientesActivos() {

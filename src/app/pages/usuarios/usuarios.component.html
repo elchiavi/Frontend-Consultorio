@@ -95,6 +95,7 @@
                     <button (click)="cambiarPagina(-5)" 
                               class="btn btn-success" 
                             [disabled]="paginaDesde==0">
+                            <i class="fa fa-arrow-left"></i>
                         Anterior
                     </button>
                     &nbsp;
@@ -102,6 +103,7 @@
                             class="btn btn-success" 
                             [disabled]="paginaDesde+5>=totalUsuarios">
                         Siguiente
+                        <i class="fa fa-arrow-right"></i>
                     </button>
                 </div>
             </div>

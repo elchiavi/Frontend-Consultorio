@@ -1,4 +1,76 @@
-<div class="row">
+<div class="row animated fadeIn fast" *ngIf="cargando">
+
+    <div class="col-12">
+
+    <div class="alert alert-info text-center">
+      <h4 class="alert-heading">Cargando</h4>
+      <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <p class="mb-0">Por favor espere</p>
+    </div>
+
+    </div>
+</div>
+
+
+<div class="row animated fadeIn fast" *ngIf="!cargando">
+    <div class="col-lg-3">
+        <div class="card bg-info">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><img src="../assets/images/icon/expense-w.png" alt="Income"></div>
+                    <div class="align-self-center">
+                        <h6 class="text-white m-t-10 m-b-0">Total Turnos {{meses[actual.getMonth()]}}: </h6>
+                        <h2 class="m-t-0 text-white">{{turnosTotales}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card bg-success">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><img src="../assets/images/icon/expense-w.png" alt="Income"></div>
+                    <div class="align-self-center">
+                        <h6 class="text-white m-t-10 m-b-0">Total Turnos con Asistencia {{meses[actual.getMonth()]}}: </h6>
+                        <h2 class="m-t-0 text-white">{{turnosConAsistencia}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card bg-danger">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><img src="../assets/images/icon/expense-w.png" alt="Income"></div>
+                    <div class="align-self-center">
+                        <h6 class="text-white m-t-10 m-b-0">Total Turnos sin Asistencia {{meses[actual.getMonth()]}}: </h6>
+                        <h2 class="m-t-0 text-white">{{turnosSinAsistencia}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card bg-primary">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><img src="../assets/images/icon/expense-w.png" alt="Income"></div>
+                    <div class="align-self-center">
+                        <h6 class="text-white m-t-10 m-b-0">Porcentaje de Asistencia {{meses[actual.getMonth()]}}: </h6>
+                        <h2 class="m-t-0 text-white">{{porcentajeAsistencia | number: '1.2-2'}}%</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn fast" *ngIf="!cargando">
     <div class="col-6">
         <app-circular title="Obras Sociales por Pacientes Activos: ({{obrasSociales.length}})"
                      [labels]="obrasSociales"

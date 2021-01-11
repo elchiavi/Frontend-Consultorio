@@ -8,7 +8,7 @@
                         #txtBuscar
                         type="text"
                         (keyup)="buscar(txtBuscar.value)"
-                        placeholder="Buscar paciente por Apellido...">
+                        placeholder="Buscar prestación...">
             </div>
         </div>
 
@@ -38,17 +38,17 @@
                 <div class="row">
 
                     <div class="col-8">
-                        <h4 class="card-title">Pacientes: {{totalPacientes}}</h4>
-                        <h6 class="card-subtitle">Pacientes registrados</h6>
+                        <h4 class="card-title">Obras Prestaciones: {{totalPrestaciones}}</h4>
+                        <h6 class="card-subtitle">Prestaciones registradas</h6>
                     </div>
 
                     <div class="col">
                     
                         <div class="text-right">
                             <a class="btn btn-success text-white"
-                               routerLink="/dashboard/pacientes/paciente/nuevo"> 
-                                <i class="fa fa-user"></i>
-                                Crear Paciente
+                                (click)="crearPrestacion()"> 
+                                <i class="fa fa-pencil"></i>
+                                Crear Prestación
                             </a>
                         </div>
     
@@ -60,28 +60,21 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Apellido</th>
                                 <th>Nombre</th>
-                                <th class="w140">DNI</th>
-                                <th>Obra Social</th>
                                 <th class="w100">Estado</th>
                                 <th class="text-nowrap w100">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let paciente of pacientes">
-                                <td>{{paciente.apellido}}</td>
-                                <td>{{paciente.nombre}}</td>
-                                <td>{{paciente.dni}}</td>
-                                <td>{{paciente.obraSocial.nombre}}</td>
+                            <tr *ngFor="let prestacion of prestaciones">
+                                <td>{{prestacion.nombre}}</td>
                                 <td class="text-center">
-                                    <span *ngIf="paciente.activo" class="label label-success">Activo</span>
-                                    <span *ngIf="!paciente.activo" class="label label-danger">Inactivo</span>
+                                    <span *ngIf="prestacion.activo" class="label label-success">Activa</span>
+                                    <span *ngIf="!prestacion.activo" class="label label-danger">Inactiva</span>
                                 </td>
                                 <td class="text-nowrap text-center">
-                                    <a (click)="verPaciente(paciente._id)" class="cursor" title="Ver"> <i class="fa fa-search text-inverse m-r-10" ></i> </a>
-                                    <a [routerLink]="['/dashboard/pacientes/paciente', paciente._id]" class="cursor" title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a (click)="activarInactivarPaciente(paciente)" class="cursor" title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a (click)="actualizarPrestacion(prestacion)" class="cursor" title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a (click)="activarInactivarPrestacion(prestacion)" class="cursor" title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -97,7 +90,7 @@
                     &nbsp;
                     <button (click)="cambiarPagina(5)" 
                             class="btn btn-success" 
-                            [disabled]="paginaDesde+5>=totalPacientes">
+                            [disabled]="paginaDesde+5>=totalPrestaciones">
                         Siguiente
                         <i class="fa fa-arrow-right"></i>
                     </button>

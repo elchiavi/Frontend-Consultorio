@@ -64,6 +64,7 @@ export class ObrasSocialesComponent implements OnInit, OnDestroy {
       this.subscriptions.add(this.obraSocService.crearObraSocial(value)
           .subscribe( (resp: any) => {
             this.obrasSociales.push(resp);
+            Swal.fire('Creada', `${value} creada correctamente`, 'success');
             this.cargarObrasSociales();
           }));
     }
