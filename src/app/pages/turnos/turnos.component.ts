@@ -1,4 +1,4 @@
-import { Component, Injectable, ViewEncapsulation, OnInit, TemplateRef, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';

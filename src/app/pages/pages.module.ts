@@ -21,6 +21,7 @@ import { NewPacienteComponent } from './pacientes/new-paciente.component';
 import { GraficsModule } from '../grafics/grafics.module';
 import { SettingsComponent } from './settings/settings.component';
 import { PrestacionesComponent } from './prestaciones/prestaciones.component';
+import { BusquedasComponent } from './busquedas/busquedas.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { PrestacionesComponent } from './prestaciones/prestaciones.component';
     VerPacienteComponent,
     NewPacienteComponent,
     SettingsComponent,
-    PrestacionesComponent
+    PrestacionesComponent,
+    BusquedasComponent
   ],
   exports: [
       DashboardComponent,

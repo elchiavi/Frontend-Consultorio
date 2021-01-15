@@ -26,6 +26,17 @@ export class TurnosService {
 
   }
 
+  cargarTurnosPorPaciente( id: string){
+
+    const url = `${base_url}/turnos/${id}`;
+    return this.http.get<CargarTurno>(url).pipe(
+      map( (resp => {
+        return resp;
+       })
+    ));
+
+  }
+
   crearTurno( data: Turno) {
 
     return this.http.post(`${base_url}/turnos`, data);
@@ -51,9 +62,6 @@ export class TurnosService {
     const url = `${base_url}/turnos/confirmar/${id}`;
     return this.http.put(url, {nombre});
 
-
-
   }
-
 
 }

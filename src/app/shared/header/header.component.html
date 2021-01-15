@@ -42,10 +42,12 @@
                     <!-- Search -->
                     <!-- ============================================================== -->
                     <li class="nav-item hidden-xs-down search-box"> <a class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
-                        <form class="app-search">
+                        <form class="app-search"
+                              (submit)="buscar(txtTermino.value)">
                             <input type="text" 
                                    class="form-control" 
-                                   placeholder="Buscar..."> 
+                                   placeholder="Buscar..."
+                                   #txtTermino> 
                                    <a class="srh-btn">
                                        <i class="ti-close"></i>
                                     </a> 
@@ -71,7 +73,7 @@
                                     </div>
                                 </li>
                                 <li role="separator" class="divider"></li>
-                                <li><a routerLinkActive="active" routerLink="configuraciones">Configuraciones</a></li>
+                                <li><a routerLinkActive="active" routerLink="configuraciones"><i class="fa fa-cog"></i> Configuraciones</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a (click)="logout()" class="cursor"><i class="fa fa-power-off"></i> Cerrar Sesión</a></li>
                             </ul>

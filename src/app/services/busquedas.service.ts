@@ -43,6 +43,13 @@ export class BusquedasService {
                 ));
   }
 
+  busquedaGlobal ( termino: string) {
+
+    const url = `${base_url}/busquedas/${termino}`;
+    return this.http.get(url);
+
+  }
+
   private transformarUsuarios( resultados: any[]): Usuario[] {
 
     return resultados.map(

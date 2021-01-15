@@ -13,6 +13,7 @@ import { ObrasSocialesComponent } from './obras-sociales/obras-sociales.componen
 import { TurnosComponent } from './turnos/turnos.component';
 import { SettingsComponent } from './settings/settings.component';
 import { PrestacionesComponent } from './prestaciones/prestaciones.component';
+import { BusquedasComponent } from './busquedas/busquedas.component';
 
 const childRoutes: Routes = [
                     {path: '', component: DashboardComponent, data: {titulo: 'Dashboard'}}, // ruta por defecto
@@ -24,7 +25,8 @@ const childRoutes: Routes = [
                     {path: 'obrassociales', component: ObrasSocialesComponent, data: {titulo: 'Obras Sociales'}},
                     {path: 'turnos', component: TurnosComponent, data: {titulo: 'Turnos'}},
                     {path: 'configuraciones', component: SettingsComponent, data: {titulo: 'Configuraciones'}},
-                    {path: 'prestaciones', component: PrestacionesComponent, data: {titulo: 'Prestaciones'}}
+                    {path: 'prestaciones', component: PrestacionesComponent, data: {titulo: 'Prestaciones'}},
+                    {path: 'buscar/:termino', component: BusquedasComponent, data: {titulo: 'Busquedas globales'}}
 
 ];
 

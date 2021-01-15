@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 
 import { Paciente } from 'src/app/models/paciente.model';
 import { PacientesService } from '../../services/pacientes.service';
+import { TurnosService } from '../../services/turnos.service';
 
 @Component({
   selector: 'app-ver-paciente',
@@ -30,6 +31,7 @@ export class VerPacienteComponent implements OnInit, OnDestroy {
     // me quedo con el ID que viene por parametro y lo uso para llamar al metodo que luego llama al servicio
     this.activatedRoute.params
                        .subscribe( ({id}) => this.cargarPacientePorId(id));
+
   }
 
   ngOnDestroy(): void {

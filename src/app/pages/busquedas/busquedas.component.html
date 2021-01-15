@@ -1,0 +1,126 @@
+<div class="row">
+    <div class="row animated fadeIn fast">
+
+        <div class="col-12 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Obras Sociales</h3>
+    
+                    <div class="alert alert-success animated fadeIn fast col-sd-12"
+                        *ngIf="obrasSociales.length === 0">
+                      <p class="mb-0">
+                          No hay obras sociales con ese término
+                      </p>
+                    </div>
+    
+                    <div class="table-responsive"
+                        *ngIf="obrasSociales.length > 0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Nombre</th>
+                                    <th class="w100">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="animated fadeIn fast"
+                                *ngFor="let obraSocial of obrasSociales">
+                                <td class="text-left">{{obraSocial.nombre}}</td>
+                                <td class="text-center">
+                                    <span *ngIf="obraSocial.activo" class="label label-success">Activa</span>
+                                    <span *ngIf="!obraSocial.activo" class="label label-danger">Inactiva</span>
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>    
+    
+                </div>
+            </div>
+        </div>
+        
+        <hr>
+
+        <div class="col-12 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Pacientes</h3>
+    
+                    <div class="alert alert-success animated fadeIn fast"
+                        *ngIf="pacientes.length === 0">
+                      <p class="mb-0">
+                          No hay pacientes con ese término
+                      </p>
+                    </div>
+    
+                    <div class="table-responsive cursor"
+                        *ngIf="pacientes.length > 0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Apellido</th>
+                                    <th class="text-left">Nombre</th>
+                                    <th class="w100">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="animated fadeIn fast"
+                                    *ngFor="let paciente of pacientes"
+                                    (click)="abrirPaciente( paciente)">
+                                    <td class="text-left">{{paciente.apellido}}</td>
+                                    <td class="text-left">{{paciente.nombre}}</td>
+                                    <td class="text-center">
+                                        <span *ngIf="paciente.activo" class="label label-success">Activo</span>
+                                        <span *ngIf="!paciente.activo" class="label label-danger">Inactivo</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+    
+    
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="col-12 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Prestaciones</h3>
+    
+                    <div class="alert alert-success animated fadeIn fast"
+                        *ngIf="prestaciones.length === 0">
+                      <p class="mb-0">
+                          No hay prestaciones con ese término
+                      </p>
+                    </div>
+    
+                    <div class="table-responsive"
+                        *ngIf="prestaciones.length > 0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Nombre</th>
+                                    <th class="w100">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="animated fadeIn fast"
+                                    *ngFor="let prestacion of prestaciones">
+                                    <td class="text-left">{{prestacion.nombre}}</td>
+                                    <td class="text-center">
+                                        <span *ngIf="prestacion.activo" class="label label-success">Activa</span>
+                                        <span *ngIf="!prestacion.activo" class="label label-danger">Inactiva</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+    
+    
+                </div>
+            </div>
+        </div>
+</div>

@@ -19,7 +19,7 @@
 
     <div class="col-12">
 
-    <div class="alert alert-info text-center">
+    <div class="alert alert-success text-center">
       <h4 class="alert-heading">Cargando</h4>
       <i class="fa fa-spin fa-refresh fa-2x"></i>
       <p class="mb-0">Por favor espere</p>
@@ -81,7 +81,9 @@
                                 <td class="text-nowrap text-center">
                                     <a (click)="verPaciente(paciente._id)" class="cursor" title="Ver"> <i class="fa fa-search text-inverse m-r-10" ></i> </a>
                                     <a [routerLink]="['/dashboard/pacientes/paciente', paciente._id]" class="cursor" title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a (click)="activarInactivarPaciente(paciente)" class="cursor" title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a (click)="verHistorialTurnos(paciente._id)" class="cursor" title="Historial de turnos"> <i class="fa fa-calendar text-inverse m-r-10"></i> </a>
+                                    <a (click)="activarInactivarPaciente(paciente)" *ngIf="!paciente.activo" class="cursor" title="Activar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a (click)="activarInactivarPaciente(paciente)" *ngIf="paciente.activo" class="cursor" title="Inactivar"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -92,13 +94,13 @@
                               class="btn btn-success" 
                             [disabled]="paginaDesde==0">
                             <i class="fa fa-arrow-left"></i>
-                        Anterior
+                        
                     </button>
                     &nbsp;
                     <button (click)="cambiarPagina(5)" 
                             class="btn btn-success" 
                             [disabled]="paginaDesde+5>=totalPacientes">
-                        Siguiente
+                        
                         <i class="fa fa-arrow-right"></i>
                     </button>
                 </div>  
@@ -108,3 +110,63 @@
     </div>
 
 </div>
+
+<ng-template #modalContent let-close="close">
+
+    <div class="modal-header">
+        <h4 class="modal-title"><strong>Historial de Turnos</strong></h4>
+    
+    </div>
+
+    <div class="row animated fadeIn fast" *ngIf="cargandoTurnos">
+
+        <div class="col-12">
+    
+        <div class="alert alert-info text-center">
+          <h4 class="alert-heading">Cargando</h4>
+          <i class="fa fa-spin fa-refresh fa-2x"></i>
+          <p class="mb-0">Por favor espere</p>
+        </div>
+    
+        </div>
+    </div>        
+
+    <div class="table-responsive" *ngIf="!cargandoTurnos">
+        <table *ngIf="turnos.length > 0" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Titulo</th>
+                    <th>Prestación</th>
+                    <th class="w100">Asistencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let turno of turnos">
+
+                    <td>{{ turno.start |date:'dd/MM/yyyy hh:mm a'}}</td>
+                    <td>{{ turno.end |date:'dd/MM/yyyy hh:mm a'}}</td>
+                    <td>{{ turno.title}}</td>
+                    <td>{{ turno.prestacion.nombre}}</td>
+                    <td class="text-center">
+                        <span *ngIf="turno.asistio" class="label label-success">Asistió</span>
+                        <span *ngIf="!turno.asistio" class="label label-danger">No Asistió</span>
+                    </td>
+                </tr>
+            
+            </tbody>
+
+        </table>
+
+        <hr>
+        <h4 *ngIf="turnos.length === 0" class="text-center">El paciente no tiene turnos</h4>
+    </div>
+    <div class="modal-footer">
+
+        <button type="button" class="btn btn-success waves-effect text-left" data-dismiss="modal" (click)="cerrarModal()">Cerrar</button>
+    </div>
+
+        
+
+</ng-template>
