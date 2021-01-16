@@ -122,7 +122,7 @@
 
         <div class="col-12">
     
-        <div class="alert alert-info text-center">
+        <div class="alert alert-success text-center">
           <h4 class="alert-heading">Cargando</h4>
           <i class="fa fa-spin fa-refresh fa-2x"></i>
           <p class="mb-0">Por favor espere</p>
@@ -160,7 +160,13 @@
         </table>
 
         <hr>
-        <h4 *ngIf="turnos.length === 0" class="text-center">El paciente no tiene turnos</h4>
+        <div class="alert alert-success animated fadeIn fast col-sd-12"
+            *ngIf="turnos.length === 0">
+            <p class="mb-0 text-center">
+                El paciente no tiene turnos
+            </p>
+        </div>
+
     </div>
     <div class="modal-footer">
 
