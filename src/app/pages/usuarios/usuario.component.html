@@ -1,17 +1,5 @@
 <div class="card-body">
     
-    <div class="col">
-                    
-        <div class="text-right text-white">
-            <a class="btn btn-success"
-               (click)="regresar()"> 
-                <i class="fa fa-arrow-left"></i>
-                Regresar
-            </a>
-        </div>
-
-    </div>
-
     <h4 class="card-title">Creación de usuario</h4>
 
     <form class="form p-t-20"
@@ -20,83 +8,97 @@
           (ngSubmit)="crearUsuario()"
           [formGroup]="userForm">
 
-        <div class="form-group">
-            <label for="exampleInputuname">Nombre</label>
-            <div class="input-group">
-                <div class="input-group-addon"><i class="ti-user"></i></div>
-                <input type="text" 
-                       class="form-control" 
-                       placeholder="Nombre"
-                       formControlName="nombre">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="exampleInputuname">Nombre</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-user"></i></div>
+                    <input type="text" 
+                        class="form-control" 
+                        placeholder="Nombre"
+                        formControlName="nombre">
+                </div>
+                <div class="col text-danger">
+                    <small *ngIf="campoNoValido('nombre')">El nombre es obligatorio</small>
+                </div>
             </div>
-            <div class="col text-danger">
-                <small *ngIf="campoNoValido('nombre')">El nombre es obligatorio</small>
+            <div class="form-group col-md-6">
+                <label for="exampleInputEmail1">E-mail</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-email"></i></div>
+                    <input type="email" 
+                        class="form-control" 
+                        placeholder="E-mail"
+                        formControlName="email">
+                </div>
+                <div class="col text-danger">
+                    <small *ngIf="campoNoValido('email')">El E-mail es obligatorio y debe ser válido</small>
+                </div>
             </div>
-        </div>
+            
+
+        </div>  
         
-        <div class="form-group">
-            <label for="exampleInputuname">Rol</label>
-            <div class="input-group">
-                <div class="input-group-addon"><i class="ti-user"></i></div>
-                    <select class="form-control"
-                             formControlName="rol">
-                        <option value="">Seleccione Rol</option>
-                        <option value="ADMIN_ROLE">Admin</option>
-                        <option value="USER_ROLE">User</option>
-                    </select>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="pwd1">Contraseña</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-lock"></i></div>
+                    <input type="password" 
+                        class="form-control" 
+                        placeholder="Contraseña"
+                        formControlName="password">
+                </div>
+                <div class="col text-danger">
+                    <small *ngIf="pass1Novalido()">La contraseña es necesaria y debe tener 6 caracteres</small>
+                </div>
             </div>
-            <div class="col text-danger">
-                <small *ngIf="campoNoValido('rol')">El rol es obligatorio</small>
+            <div class="form-group col-md-6">
+                <label for="pwd2">Confirmar Contraseña</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-lock"></i></div>
+                    <input type="password" 
+                        class="form-control" 
+                        placeholder="Contraseña"
+                        formControlName="password2">
+                </div>
+                <div class="col text-danger">
+                    <small *ngIf="contrasenasNoValidas()">Las contraseñas deben ser iguales</small>
+                </div>
             </div>
-        </div>
-        
-        <div class="form-group">
-            <label for="exampleInputEmail1">E-mail</label>
-            <div class="input-group">
-                <div class="input-group-addon"><i class="ti-email"></i></div>
-                <input type="email" 
-                       class="form-control" 
-                       placeholder="E-mail"
-                       formControlName="email">
-            </div>
-            <div class="col text-danger">
-                <small *ngIf="campoNoValido('email')">El E-mail es obligatorio y debe ser válido</small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="pwd1">Contraseña</label>
-            <div class="input-group">
-                <div class="input-group-addon"><i class="ti-lock"></i></div>
-                <input type="password" 
-                       class="form-control" 
-                       placeholder="Contraseña"
-                       formControlName="password">
-            </div>
-            <div class="col text-danger">
-                <small *ngIf="pass1Novalido()">La contraseña es necesaria y debe tener 6 caracteres</small>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label for="pwd2">Confirmar Contraseña</label>
-            <div class="input-group">
-                <div class="input-group-addon"><i class="ti-lock"></i></div>
-                <input type="password" 
-                       class="form-control" 
-                       placeholder="Contraseña"
-                       formControlName="password2">
+        </div>
+        <div class="row">
+
+            <div class="form-group col-md-6">
+                <label for="exampleInputuname">Rol</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-user"></i></div>
+                        <select class="form-control"
+                                formControlName="rol">
+                            <option value="">Seleccione Rol</option>
+                            <option value="ADMIN_ROLE">Admin</option>
+                            <option value="USER_ROLE">User</option>
+                        </select>
+                </div>
+                <div class="col text-danger">
+                    <small *ngIf="campoNoValido('rol')">El rol es obligatorio</small>
+                </div>
             </div>
-            <div class="col text-danger">
-                <small *ngIf="contrasenasNoValidas()">Las contraseñas deben ser iguales</small>
-            </div>
+            
         </div>
 
-
-
-        <button type="submit"
-                class="btn btn-success btn-block">
+        <div class="text-center">
+            <button type="button" class="btn btn-danger mr-2"
+            (click)="cancelar()">
+                Cancelar
+            </button>
+            <button type="submit"
+                class="btn btn-success">
                 Guardar
-        </button>
+            </button>
+        </div>
+
 
     </form>
 </div>

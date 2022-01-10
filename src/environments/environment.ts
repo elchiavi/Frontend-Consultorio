@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://localhost:3100/api'
+  base_url: 'https://turnos-pro.herokuapp.com/api' //'http://localhost:3100/api'
 };
 
 /*

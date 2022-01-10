@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.turnosService.cargarTurnos().subscribe( resp => {
       resp.turnos.forEach( event => {
         const fechaStart = new Date(event.start);
-        if (fechaStart.getMonth() === this.actual.getMonth()) {
+        if ( fechaStart.getFullYear() === this.actual.getFullYear() && fechaStart.getMonth() === this.actual.getMonth()) {
           this.turnosTotales ++;
           if (event.asistio){
             this.turnosConAsistencia ++;

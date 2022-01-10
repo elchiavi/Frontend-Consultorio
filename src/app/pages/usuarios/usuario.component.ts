@@ -105,7 +105,18 @@ export class UsuarioComponent implements OnInit, OnDestroy {
         }));
   }
 
-  regresar() {
-    this.location.back();
+  cancelar() {
+    Swal.fire({
+      title: '¿Desea cancelar y salir?',
+      text: 'Los datos no serán guardados',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí'
+      }).then((result) => {
+          if (result.isConfirmed) {
+
+            this.location.back();
+          }
+        });
   }
 }

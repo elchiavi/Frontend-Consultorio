@@ -72,11 +72,6 @@ export class NewPacienteComponent implements OnInit, OnDestroy {
 
   }
 
-  regresar() {
-    this.location.back();
-  }
-
-
   campoNoValido( campo: string): boolean {
 
     if (this.pacienteForm.get(campo).invalid && this.formSubmited) {
@@ -170,6 +165,22 @@ export class NewPacienteComponent implements OnInit, OnDestroy {
       this.pacienteForm.get('numeroAfiliado').enable();
 
     }
+  }
+
+
+  cancelar() {
+    Swal.fire({
+      title: '¿Desea cancelar y salir?',
+      text: 'Los datos no serán guardados',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí'
+      }).then((result) => {
+          if (result.isConfirmed) {
+
+            this.location.back();
+          }
+        });
   }
 
 
